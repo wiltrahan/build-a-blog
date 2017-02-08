@@ -24,6 +24,15 @@ template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
                                autoescape = True)
 
+def get_posts(limit, offset):
+    count = db.GqlQuery("SELECT * FROM Post "
+                        "ORDER BY created DESC "
+                        "limit 5 offset 5")
+    
+    return count
+
+
+
 class Handler(webapp2.RequestHandler):
     def write(self, *a, **kw):
         self.response.out.write(*a, **kw)
@@ -41,7 +50,7 @@ class Post(db.Model):
     created = db.DateTimeProperty(auto_now_add = True)
 
 
-class MainPage(Handler):
+class NewPost(Handler):
 
     def render_front(self, title="", post="", error=""):
         self.render("newpost.html", title=title, post=post, error=error)
@@ -56,7 +65,7 @@ class MainPage(Handler):
         if title and post:
             p = Post(title = title, post = post)
             p.put()
-            
+
             self.redirect("/blog/%s" % str(p.key().id()))
         else:
             error = "You must enter a title, and a post!"
@@ -72,6 +81,7 @@ class Blog(Handler):
 
     def get(self):
         self.render_blog()
+        get_posts(5, 5)
 
     def post(self):
         title = self.request.get("title")
@@ -87,9 +97,8 @@ class ViewPostHandler(Handler):
         else:
             self.response.write("Nah dude")
 
-
 app = webapp2.WSGIApplication([
-    ('/', MainPage),
+    ('/', NewPost),
     ('/blog', Blog),
     webapp2.Route('/blog/<id:\d+>', ViewPostHandler)
 ], debug=True)

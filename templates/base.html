@@ -52,16 +52,22 @@
       .post-body {
         margin: 0 auto;
         font-size: 17px;
+
       }
       p {
         text-overflow: ellipsis;
-        white-space: nowrap;
+        white-space: wrap;
         overflow:hidden;
+    }
+
+    .single-post {
+      width: 800px;
+      font-family: monospace;
     }
   </style>
 
   <body>
-    <h1>BLOG!</h1>
+
 
     {% block content %}
     {% endblock %}

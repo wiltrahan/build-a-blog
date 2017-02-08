@@ -76,10 +76,20 @@ class Blog(Handler):
     def post(self):
         title = self.request.get("title")
         post = self.request.get("post")
+        
 
+class ViewPostHandler(Handler):
+
+    def get(self, id):
+        single_post = Post.get_by_id(int(id), parent = None)
+        if single_post:
+            self.render("perma.html", single_post = single_post)
+        else:
+            self.response.write("Nah dude")
 
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),
-    ('/blog', Blog)
+    ('/blog', Blog),
+    webapp2.Route('/blog/<id:\d+>', ViewPostHandler)
 ], debug=True)

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="post">
+  <div class="post-title">
+    {{single_post.title}}
+  </div>
+  <div class="post-body">
+    <p class="single-post">{{single_post.post}}</p>
+  </div>
+</div>
+{% endblock %}

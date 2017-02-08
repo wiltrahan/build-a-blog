@@ -44,7 +44,7 @@ class Post(db.Model):
 class MainPage(Handler):
 
     def render_front(self, title="", post="", error=""):
-        self.render("front.html", title=title, post=post, error=error)
+        self.render("newpost.html", title=title, post=post, error=error)
 
     def get(self):
         self.render_front()

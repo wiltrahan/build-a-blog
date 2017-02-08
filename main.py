@@ -44,9 +44,7 @@ class Post(db.Model):
 class MainPage(Handler):
 
     def render_front(self, title="", post="", error=""):
-        posts = db.GqlQuery("SELECT * FROM Post "
-                            "ORDER BY created DESC ")
-        self.render("front.html", title=title, post=post, error=error, posts=posts)
+        self.render("front.html", title=title, post=post, error=error)
 
     def get(self):
         self.render_front()
@@ -59,11 +57,29 @@ class MainPage(Handler):
             p = Post(title = title, post = post)
             p.put()
 
-            self.redirect("/")
+            self.redirect("/blog")
         else:
             error = "You must enter a title, and a post!"
             self.render_front(title, post, error)
 
+class Blog(Handler):
+
+    def render_blog(self, title="", post=""):
+        posts = db.GqlQuery("SELECT * FROM Post "
+                            "ORDER BY created DESC "
+                            "LIMIT 5")
+        self.render("blog.html", title=title, post=post, posts=posts)
+
+    def get(self):
+        self.render_blog()
+
+    def post(self):
+        title = self.request.get("title")
+        post = self.request.get("post")
+
+
+
 app = webapp2.WSGIApplication([
-    ('/', MainPage)
+    ('/', MainPage),
+    ('/blog', Blog)
 ], debug=True)

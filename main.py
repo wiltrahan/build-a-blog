@@ -57,7 +57,8 @@ class MainPage(Handler):
             p = Post(title = title, post = post)
             p.put()
 
-            self.redirect("/blog")
+
+            self.redirect("/blog/%s" % str(p.key().id()))
         else:
             error = "You must enter a title, and a post!"
             self.render_front(title, post, error)
@@ -76,7 +77,7 @@ class Blog(Handler):
     def post(self):
         title = self.request.get("title")
         post = self.request.get("post")
-        
+
 
 class ViewPostHandler(Handler):
 

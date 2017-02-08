@@ -56,8 +56,7 @@ class MainPage(Handler):
         if title and post:
             p = Post(title = title, post = post)
             p.put()
-
-
+            
             self.redirect("/blog/%s" % str(p.key().id()))
         else:
             error = "You must enter a title, and a post!"

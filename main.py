@@ -25,11 +25,14 @@ jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
                                autoescape = True)
 
 def get_posts(limit, offset):
-    count = db.GqlQuery("SELECT * FROM Post "
+
+    posts = db.GqlQuery("SELECT * FROM Post "
                         "ORDER BY created DESC "
-                        "limit 5 offset 5")
-    
-    return count
+                        "limit %i offset %i" % (int(limit), int(offset)))
+
+    posts.count(offset=offset, limit=page_size)
+    return posts
+
 
 
 
@@ -79,13 +82,16 @@ class Blog(Handler):
                             "LIMIT 5")
         self.render("blog.html", title=title, post=post, posts=posts)
 
+
+
     def get(self):
         self.render_blog()
-        get_posts(5, 5)
+
 
     def post(self):
         title = self.request.get("title")
         post = self.request.get("post")
+        page = self.request.get("page")
 
 
 class ViewPostHandler(Handler):

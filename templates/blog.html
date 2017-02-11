@@ -13,8 +13,12 @@
   </div>
 {% endfor %}
 
-  <p>
-    <a href="blog?page=" name="page">prev</a> | <a href="blog?page=" name="page">next</a>
-  </p>
+{% if posts.count > 5 %}
+<p>
+  <a href="blog?page=" name="page">prev</a> | <a href="blog?page=" name="page">next</a>
+</p>
+{% else %}
+  Fawk
+{% endif %}
 
 {% endblock %}

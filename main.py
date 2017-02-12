@@ -83,7 +83,7 @@ class Blog(Handler):
         # posts = db.GqlQuery("SELECT * FROM Post "
         #                     "ORDER BY created DESC "
         #                     "LIMIT 5")
-        posts = get_posts(5, 0)
+        posts = get_posts(2, 0)
         self.render("blog.html", title=title, post=post, page=page, posts=posts)
 
 
